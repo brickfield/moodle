@@ -28,7 +28,7 @@ $tasks = [
     [
         'classname' => 'tool_brickfield\task\bulk_process_courses',
         'blocking' => 0,
-        'minute' => '*/15',
+        'minute' => '*/5',
         'hour' => '*',
         'day' => '*',
         'dayofweek' => '*',
@@ -38,7 +38,7 @@ $tasks = [
     [
         'classname' => 'tool_brickfield\task\bulk_process_caches',
         'blocking' => 0,
-        'minute' => '*/15',
+        'minute' => '*/5',
         'hour' => '*',
         'day' => '*',
         'dayofweek' => '*',
@@ -68,7 +68,7 @@ $tasks = [
     [
         'classname' => 'tool_brickfield\task\process_analysis_requests',
         'blocking' => 0,
-        'minute' => '*/15',
+        'minute' => '*/5',
         'hour' => '*',
         'day' => '*',
         'dayofweek' => '*',

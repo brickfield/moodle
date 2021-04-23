@@ -45,7 +45,7 @@
 
 .tool_brickfield_grid_display {
     display: grid;
-    grid-template-columns: 0.8fr 1.2fr 1fr;
+    grid-template-columns: 0.6fr 1.4fr 1fr;
     grid-template-rows: 1fr 1fr;
 }
 
@@ -71,11 +71,10 @@
 }
 
 .tool_brickfield_logo_height {
-    height: 5em;
+    height: 3em;
 }
 
 .tool_brickfield_logo_position {
-    text-align: center;
     padding-bottom: 2em;
 }
 
@@ -85,7 +84,7 @@
 }
 
 .tool_brickfield_icon_height {
-    height: 50px;
+    height: 30px;
 }
 
 .tool_brickfield_center_button {
@@ -109,26 +108,13 @@
 }
 
 .tool_brickfield_banner_heading {
-    text-align: center;
-    color: #fff;
     margin-bottom: 1.5em;
 }
 
-.tool_brickfield_bold_heading {
-    font-weight: bold;
-}
 
-.tool_brickfield_top_banner {
-    background-color: #4054b2;
-    height: 20em;
-    padding: 2.5em;
-    margin-bottom: 2em;
-}
 
-.tool_brickfield_bottom_banner {
-    background-color: #4054b2;
-    height: 19em;
+.tool_brickfield_banner {
+    height: 10em;
     padding: 2.5em;
-    margin-top: 2em;
     margin-bottom: 2em;
 }

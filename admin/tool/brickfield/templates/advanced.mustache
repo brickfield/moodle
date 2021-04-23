@@ -29,22 +29,14 @@
 
 <h3>{{{pagetitle}}}</h3>
 
-<section class="tool_brickfield_top_banner">
-    <div class="tool_brickfield_logo_position">
-        <img src="pix/i/Brickfield-logo-white.png" alt="Brickfield Logo" class="tool_brickfield_logo_height">
-    </div>
+<section class="tool_brickfield_banner">
     <div class="tool_brickfield_banner_heading">
-        <h2 class="tool_brickfield_bold_heading">
-            {{# str }}subheadingone, tool_brickfield{{/ str }}
-        </h2>
+        <img src="pix/i/Brickfield-logo-black.png" alt="Brickfield Logo" class="pull-right tool_brickfield_logo_height">
+        <h2>{{# str }}bannerheadingone, tool_brickfield{{/ str }}</h2>
     </div>
-    <div class="tool_brickfield_center_button">
-        <form action="https://www.brickfield.ie/moodle_talk_to_sales/">
-            <button class="tool_brickfield_advanced_button">
-                {{# str }}buttonone, tool_brickfield{{/ str }}
-            </button>
-        </form>
-    </div>
+    <p>
+        {{# str }}bannercontentone, tool_brickfield, <a href="https://www.brickfield.ie/moodle_talk_to_sales/">{{# str }}contactus, tool_brickfield{{/ str }}</a>{{/ str }}
+    </p>
 </section>
 
 <div class="tool_brickfield_grid">
@@ -61,11 +53,11 @@
                         </div>
                     </div>
                     <div style="grid-area: ar;">
-                        <h2>
+                        <h3>
                             <span class="tool_brickfield_grid_heading">
                                 {{# str }}headingone, tool_brickfield{{/ str }}
                             </span>
-                        </h2>
+                        </h3>
                         <p class="tool_brickfield_grid_content">
                             {{# str }}contentone, tool_brickfield{{/ str }}
                         </p>
@@ -85,11 +77,11 @@
                         </div>
                     </div>
                     <div style="grid-area: br;">
-                        <h2>
+                        <h3>
                             <span class="tool_brickfield_grid_heading">
                                 {{# str }}headingtwo, tool_brickfield{{/ str }}
                             </span>
-                        </h2>
+                        </h3>
                         <p class="tool_brickfield_grid_content">
                             {{# str }}contenttwo, tool_brickfield{{/ str }}
                         </p>
@@ -109,11 +101,11 @@
                         </div>
                     </div>
                     <div style="grid-area: cr;">
-                        <h2>
+                        <h3>
                             <span class="tool_brickfield_grid_heading">
                                 {{# str }}headingthree, tool_brickfield{{/ str }}
                             </span>
-                        </h2>
+                        </h3>
                         <p class="tool_brickfield_grid_content">
                             {{# str }}contentthree, tool_brickfield{{/ str }}
                         </p>
@@ -133,11 +125,11 @@
                         </div>
                     </div>
                     <div style="grid-area: dr;">
-                        <h2>
+                        <h3>
                             <span class="tool_brickfield_grid_heading">
                                 {{# str }}headingfour, tool_brickfield{{/ str }}
                             </span>
-                        </h2>
+                        </h3>
                         <p class="tool_brickfield_grid_content">
                             {{# str }}contentfour, tool_brickfield{{/ str }}
                         </p>
@@ -157,11 +149,11 @@
                         </div>
                     </div>
                     <div style="grid-area: er;">
-                        <h2>
+                        <h3>
                             <span class="tool_brickfield_grid_heading">
                                 {{# str }}headingfive, tool_brickfield{{/ str }}
                             </span>
-                        </h2>
+                        </h3>
                         <p class="tool_brickfield_grid_content">
                             {{# str }}contentfive, tool_brickfield{{/ str }}
                         </p>
@@ -181,85 +173,13 @@
                         </div>
                     </div>
                     <div style="grid-area: fr;">
-                        <h2>
+                        <h3>
                             <span class="tool_brickfield_grid_heading">
                                 {{# str }}headingsix, tool_brickfield{{/ str }}
                             </span>
-                        </h2>
+                        </h3>
                         <p class="tool_brickfield_grid_content">
                             {{# str }}contentsix, tool_brickfield{{/ str }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="tool_brickfield_grid_item">
-            <div class="tool_brickfield_grid_item_shape">
-                <div class="tool_brickfield_grid_display" style="grid-template-areas: 'gl gr gr' 'gl gr gr'; grid-area: g;">
-                    <div style="grid-area: gl;">
-                        <div class="tool_brickfield_grid_spacing">
-                            <span class="tool_brickfield_icon_position">
-                                <img src="pix/i/lightbulb-custom.png" alt="Lightbulb icon" class="tool_brickfield_icon_height">
-                            </span>
-                        </div>
-                    </div>
-                    <div style="grid-area: gr;">
-                        <h2>
-                            <span class="tool_brickfield_grid_heading">
-                                {{# str }}headingseven, tool_brickfield{{/ str }}
-                            </span>
-                        </h2>
-                        <p class="tool_brickfield_grid_content">
-                            {{# str }}contentseven, tool_brickfield{{/ str }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="tool_brickfield_grid_item">
-            <div class="tool_brickfield_grid_item_shape">
-                <div class="tool_brickfield_grid_display" style="grid-template-areas: 'hl hr hr' 'hl hr hr'; grid-area: h;">
-                    <div style="grid-area: hl;">
-                        <div class="tool_brickfield_grid_spacing">
-                            <span class="tool_brickfield_icon_position">
-                                <img src="pix/i/edit-custom.png" alt="Edit icon" class="tool_brickfield_icon_height">
-                            </span>
-                        </div>
-                    </div>
-                    <div style="grid-area: hr;">
-                        <h2>
-                            <span class="tool_brickfield_grid_heading">
-                                {{# str }}headingeight, tool_brickfield{{/ str }}
-                            </span>
-                        </h2>
-                        <p class="tool_brickfield_grid_content">
-                            {{# str }}contenteight, tool_brickfield{{/ str }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="tool_brickfield_grid_item">
-            <div class="tool_brickfield_grid_item_shape">
-                <div class="tool_brickfield_grid_display" style="grid-template-areas: 'il ir ir' 'il ir ir'; grid-area: i;">
-                    <div style="grid-area: il;">
-                        <div class="tool_brickfield_grid_spacing">
-                            <span class="tool_brickfield_icon_position">
-                                <img src="pix/i/chart-network-custom.png" alt="Charted network icon" class="tool_brickfield_icon_height">
-                            </span>
-                        </div>
-                    </div>
-                    <div style="grid-area: ir;">
-                        <h2>
-                            <span class="tool_brickfield_grid_heading">
-                                {{# str }}headingnine, tool_brickfield{{/ str }}
-                            </span>
-                        </h2>
-                        <p class="tool_brickfield_grid_content">
-                            {{# str }}contentnine, tool_brickfield{{/ str }}
                         </p>
                     </div>
                 </div>
@@ -269,21 +189,14 @@
     </div>
 </div>
 
-<section class="tool_brickfield_bottom_banner">
-    <div class="tool_brickfield_banner_heading">
-        <h1 class="tool_brickfield_bold_heading">
-            {{# str }}bannerheadingtwo, tool_brickfield{{/ str }}
-        </h1>
-    </div>
-    <div class="tool_brickfield_banner_heading">
-        <h2>
-            {{# str }}subheadingtwo, tool_brickfield{{/ str }}
-        </h2>
-    </div>
+<section class="tool_brickfield_banner">
+    <p>
+        {{# str }}bannercontenttwo, tool_brickfield{{/ str }}
+    </p>
     <div class="tool_brickfield_center_button">
         <form action="https://www.brickfield.ie/moodle_free_demo/">
             <button class="tool_brickfield_advanced_button">
-                {{# str }}buttontwo, tool_brickfield{{/ str }}
+                {{# str }}buttonone, tool_brickfield{{/ str }}
             </button>
         </form>
     </div>

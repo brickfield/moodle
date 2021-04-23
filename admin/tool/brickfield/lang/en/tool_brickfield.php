@@ -234,6 +234,7 @@ $string['checkdesc:imghasalt'] = 'Image Alt (Alternative) Text should not missin
 $string['checkdesc:imgwithmaphasusemap'] = 'Image maps, with clickable areas, need matching "usemap" and "map" elements';
 $string['checkdesc:legendtextnotempty'] = '"Legend" elements, used for captioning fieldset elements, should contain text';
 $string['checkdesc:marqueeisnotused'] = '"Marquee" (auto-scrolling) elements are not accessible and should not be used';
+$string['checkdesc:noheadings'] = 'No headers makes content less structured and harder to read';
 $string['checkdesc:objectmusthaveembed'] = '"Object" elements (for embedding external resources) should not be missing their corresponding "embed" elements';
 $string['checkdesc:objectmusthavetitle'] = '"Object" elements (for embedding external resources) should not be missing their corresponding "title" descriptions';
 $string['checkdesc:objectmusthavevalidtitle'] = '"Object" elements (for embedding external resources) should have corresponding "titles" with text';

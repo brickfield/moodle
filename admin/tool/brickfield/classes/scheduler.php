@@ -272,7 +272,7 @@ class scheduler {
         $recordcount = 0;
         $records = [];
         $scheduler = new scheduler(0, $contextlevel);
-        $coursesset = $DB->get_recordset('course', null, 'id', 'id,id');
+        $coursesset = $DB->get_recordset('course', null, 'id', 'id, id as courseid');
         foreach ($coursesset as $course) {
             $recordcount++;
             $scheduler->instanceid = $course->id;

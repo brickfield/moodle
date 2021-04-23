@@ -111,8 +111,8 @@ class printable extends tool {
         INNER JOIN {' . manager::DB_CONTENT . '} ch ON ch.areaid = area.id AND ch.iscurrent = 1
         INNER JOIN {' . manager::DB_RESULTS . '} res ON res.contentid = ch.id
         INNER JOIN {' . manager::DB_CHECKS . '} che ON che.id = res.checkid
-             WHERE 1=1 ' . $wheresql . ' GROUP BY checkgroup
-          ORDER BY checkgroup';
+             WHERE 1=1 ' . $wheresql . ' GROUP BY che.checkgroup
+          ORDER BY che.checkgroup';
 
         $groupdata = $DB->get_records_sql($sql, $params);
 
@@ -120,16 +120,16 @@ class printable extends tool {
 
         // Adding check displaynames from language strings.
 
-        $wheresql = ' and courseid = ?';
+        $wheresql = ' and area.courseid = ?';
         $params = [$filter->courseid];
 
         $sql4 = 'SELECT area.component, sum(res.errorcount) as errorsum
                FROM {' . manager::DB_AREAS . '} area
         INNER JOIN {' . manager::DB_CONTENT . '} ch ON ch.areaid = area.id AND ch.iscurrent = 1
         INNER JOIN {' . manager::DB_RESULTS . '} res ON res.contentid = ch.id
-             WHERE 1=1 ' . $wheresql . ' GROUP BY component
-          ORDER BY errorsum desc LIMIT 5';
-        $toptargetdataraw = $DB->get_records_sql($sql4, $params);
+             WHERE 1=1 ' . $wheresql . ' GROUP BY area.component
+          ORDER BY errorsum DESC';
+        $toptargetdataraw = $DB->get_records_sql($sql4, $params, 0, 5);
         $toptargetdata = [];
         foreach ($toptargetdataraw as $top) {
             $top->component = tool::get_module_label($top->component);
@@ -144,10 +144,10 @@ class printable extends tool {
         INNER JOIN {' . manager::DB_CONTENT . '} ch ON ch.areaid = area.id AND ch.iscurrent = 1
         INNER JOIN {' . manager::DB_RESULTS . '} res ON res.contentid = ch.id
         INNER JOIN {' . manager::DB_CHECKS . '} che ON che.id = res.checkid
-             WHERE 1=1 ' . $wheresql . ' AND res.errorcount >= ? GROUP BY shortname
-          ORDER BY checkcount DESC LIMIT 5';
+             WHERE 1=1 ' . $wheresql . ' AND res.errorcount >= ? GROUP BY che.shortname
+          ORDER BY checkcount DESC';
         $params[] = 1;
-        $checkcountdata = $DB->get_records_sql($sql3, $params);
+        $checkcountdata = $DB->get_records_sql($sql3, $params, 0, 5);
         foreach ($checkcountdata as $key => &$cdata) {
             $cdata->checkname = self::get_check_description($key);
         }

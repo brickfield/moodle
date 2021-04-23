@@ -310,7 +310,7 @@ $string['printable:toolname'] = 'Summary report';
 $string['printable:toolshortname'] = 'Summary report';
 $string['printable:downloadpdf'] = 'Download PDF';
 $string['printable:printreport'] = 'Printable report';
-$string['error:nocoursespecified'] = 'No valid course specified.';
+$string['error:nocoursespecified'] = '<p>This summary report requires a valid courseid.</p><p> Please access the accessibility toolkit from within a course, by using its Actions menu administration link to the Accessibility toolkit, which will then supply this required courseid.</p>';
 $string['pdf:filename'] = 'Brickfield_Summaryreport_CourseID-{$a}';
 
 // Advanced page.

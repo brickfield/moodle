@@ -857,7 +857,8 @@ class manager {
             '311_activity_information_activity_page_student.json' => 2,
             '311_activity_information_activity_page_teacher.json' => 2,
             '311_activity_information_course_page_student.json' => 2,
-            '311_activity_information_course_page_teacher.json' => 2
+            '311_activity_information_course_page_teacher.json' => 2,
+            '311_accessibilitytoolkit.json' => 1,
         ];
 
         // These are tours that we used to ship but don't ship any longer.

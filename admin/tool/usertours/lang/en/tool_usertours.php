@@ -250,3 +250,31 @@ $string['tour_activityinfo_course_teacher_content'] = 'New course settings \'Sho
 
 $string['tour_final_step_title'] = 'End of tour';
 $string['tour_final_step_content'] = 'This is the end of your user tour. It won\'t show again unless you reset it using the link in the footer.';
+
+// 3.11 Accessibility toolkit tour.
+$string['tour5_title_toolkit'] = 'Welcome';
+$string['tour5_content_toolkit'] = 'Welcome to the Brickfield Accessibility toolkit dashboard! This toolkit is designed to help organisations and educators deliver course content that is accessible to all learners!
+
+Teachers can see results per course, and administrators can see combined results of all analysed courses, as well as per course.
+
+Once a course has been submitted for analysis, its results will shortly appear, then ongoing updates will trigger re-analysis on individual activities and content.';
+$string['tour5_title_errorlist'] = 'Error list page';
+$string['tour5_content_errorlist'] = 'The Error list page gives you a full list of your existing accessibility issues.';
+$string['tour5_title_activities'] = 'Error list: Activity details';
+$string['tour5_content_activities'] = 'The activity type and name are displayed here. Activities here are included as either activities, resources, or other content areas relating to the courses themselves.';
+$string['tour5_title_checks'] = 'Error list: Check details';
+$string['tour5_content_checks'] = 'The error\'s related accessibility check is displayed here, to explain the issue in clear language.';
+$string['tour5_title_htmlcode'] = 'Error list: Existing HTML code';
+$string['tour5_content_htmlcode'] = 'The error\'s existing HTML code is displayed here, to show the exact part of the content which needs editing.';
+$string['tour5_title_editlink'] = 'Error list: Edit link';
+$string['tour5_content_editlink'] = 'The error\'s Edit link is displayed here, to give a timely, direct link to edit the relevant content where the error is located.';
+$string['tour5_title_activitiespage'] = 'Activity breakdown page';
+$string['tour5_content_activitiespage'] = 'The activity breakdown page displays a ChartJS bar-chart of the ratio of passed to failed instances in total, per activity, such as assignment, choice, label, and so on.';
+$string['tour5_title_contenttypes'] = 'Content Types page';
+$string['tour5_content_contenttypes'] = 'The content types page displays a ChartJS pie-chart of the error totals breakdown per content type group: *Image *Layout *Link *Media *Table *Text';
+$string['tour5_title_summary'] = 'Summary report page';
+$string['tour5_content_summary'] = 'The summary report gives an overview of a course\'s accessibility review, including activities as passed or failed, top occuring errors, top failing activity types, error counts per content type, activity type pass ratio and a selection from the error list. It also provides a PDF download version of the same information.';
+$string['tour5_title_advanced'] = 'Advanced page';
+$string['tour5_content_advanced'] = 'The Advanced page gives information on the commercial versions of the Accessibility toolkit, and the comprehensive features they offer, which are available from <a href="https://www.brickfield.ie/">Brickfield Education Labs.</a>';
+$string['tour5_final_step_title'] = 'Thanks for viewing!';
+$string['tour5_final_step_content'] = 'This is the end of your Accessibility toolkit user tour. It won\'t show again unless you reset it using the link in the footer.';

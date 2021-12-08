@@ -16,6 +16,8 @@
 
 namespace tool_brickfield\local\tool;
 
+use tool_brickfield\manager;
+
 /**
  * Class advanced.
  *
@@ -56,11 +58,26 @@ class advanced extends tool {
      * @return \stdClass
      */
     protected function fetch_data(): \stdClass {
+        $makeitem = function($icon, $heading, $content) {
+            return [
+                "icon" => "pix/i/$icon.png",
+                "iconalt" => get_string("icon:$icon", manager::PLUGINNAME),
+                "heading" => get_string($heading, manager::PLUGINNAME),
+                "content" => get_string($content, manager::PLUGINNAME)
+            ];
+        };
         $data = (object)[
+            'griditems' => [
+                $makeitem("analytics-custom", "headingone", "contentone"),
+                $makeitem("tools-custom", "headingtwo", "contenttwo"),
+                $makeitem("file-edit-custom", "headingthree", "contentthree"),
+                $makeitem("search-plus-custom", "headingfour", "contentfour"),
+                $makeitem("wand-magic-custom", "headingfive", "contentfive"),
+                $makeitem("hands-helping-custom", "headingsix", "contentsix"),
+            ],
             'valid' => true,
-            'error' => '',
+            'error' => ''
         ];
-
         return $data;
     }
 }

@@ -21,6 +21,7 @@
 
     Example context (json):
     {
+        "menutitle": "Accessibility toolkit navigation",
         "tabs": [
             {
                 "active": "true",
@@ -37,13 +38,12 @@
         ]
     }
 }}
-<ul class="nav nav-tabs mb-3">
-    {{#tabs}}
-        <li class="nav-item"{{#id}} id="{{id}}{{/id}}">
-            <a class="nav-link{{#active}} active{{/active}}{{#extraclass}} {{extraclass}}{{/extraclass}}{{#inactive}} disabled{{/inactive}}" {{#link}}href="{{{link}}}"{{/link}} title="{{title}}">{{{text}}}</a>
-        </li>
-    {{/tabs}}
-</ul>
-{{#secondrow}}
-    {{>core/tabtree}}
-{{/secondrow}}
+<nav id="toolbrickfieldnav" aria-label="{{menutitle}}">
+    <ul role="menu" class="nav nav-tabs mb-3">
+        {{#tabs}}
+            <li role="presentation" class="nav-item"{{#id}} id="{{id}}{{/id}}">
+                <a role="menuitem" class="nav-link{{#active}} active{{/active}}{{#extraclass}} {{extraclass}}{{/extraclass}}{{#inactive}} disabled{{/inactive}}" {{#link}}href="{{{link}}}"{{/link}} title="{{title}}">{{{text}}}</a>
+            </li>
+        {{/tabs}}
+    </ul>
+</nav>

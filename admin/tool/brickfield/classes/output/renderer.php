@@ -94,6 +94,7 @@ class renderer extends plugin_renderer_base {
             return '';
         }
         $data = $tabtree->export_for_template($this);
+        $data->menutitle = get_string('navmenutitle', manager::PLUGINNAME);
         foreach ($data->tabs as $idx => $tab) {
             if (isset($tabtree->subtree[$idx]->extraclass)) {
                 $data->tabs[$idx]->extraclass = $tabtree->subtree[$idx]->extraclass;

@@ -224,7 +224,13 @@ class printable extends tool {
 
         $renderer = $PAGE->get_renderer('tool_brickfield', 'printable');
         if ($filter->target == 'pdf') {
-            $renderer->pdf_renderer($data, $filter);
+            try {
+                $renderer->pdf_renderer($data, $filter);
+            } catch (\Exception $e) {
+                // Images were likely the issue -- occurs in non ssl environments.
+                $renderer->set_images_enabled(false);
+                $renderer->pdf_renderer($data, $filter);
+            }
             return '';
         } else if ($filter->target == 'html') {
             $output = $renderer->header();

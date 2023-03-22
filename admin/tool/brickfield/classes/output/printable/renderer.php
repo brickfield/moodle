@@ -283,22 +283,22 @@ class renderer extends \tool_brickfield\output\renderer {
             <h1>' . get_string('accessibilityreport', manager::PLUGINNAME) . '</h1>
             <h2>'. accessibility::get_title($filter, $data->countdata) .'</h2>
             <p>' . userdate($date->getTimestamp()) . '</p>
-            <table cellspacing="0" cellpadding="1">
+            <table cellspacing="0" cellpadding="1" width="100%">
                 <tr>
-                    <td>'
+                    <td width="15">'
                         .  $this->render_image('tachometer-alt-solid.svg')
-                        . ' <td style="line-height: 10px;"> ' . get_string('totalactivities', manager::PLUGINNAME) . ': '
-                        . $data->combodata['total'] . '</td>
+                        . ' </td><td width="30%"> ' . get_string('totalactivities', manager::PLUGINNAME) . ': '
+                        . $data->combodata['total'] . '
                     </td>
-                    <td>'
+                    <td width="15">'
                         . $this->render_image('check-square-regular.svg')
-                        . ' <td style="line-height: 10px;"> ' . get_string('passed', manager::PLUGINNAME) . ': '
-                        . $data->combodata['passed'] . '</td>
+                        . ' </td><td width="30%"> ' . get_string('passed', manager::PLUGINNAME) . ': '
+                        . $data->combodata['passed'] . '
                     </td>
-                    <td>'
+                    <td width="15">'
                         . $this->render_image('times-circle-regular.svg')
-                        . ' <td style="line-height: 10px;"> ' . get_string('failed', manager::PLUGINNAME) . ': '
-                        . $data->combodata['failed'] . '</td>
+                        . ' </td><td width="30%"> ' . get_string('failed', manager::PLUGINNAME) . ': '
+                        . $data->combodata['failed'] . '
                     </td>
                 </tr>
             </table>';
@@ -431,9 +431,7 @@ class renderer extends \tool_brickfield\output\renderer {
             $icon = $icons[$key];
             $tabledata[] = [
                 $icon
-                    . '<td style="line-height: 10px;"> '
-                    . get_string('checktype:' . $checkgroup, manager::PLUGINNAME)
-                    . '</td>',
+                    . get_string('checktype:' . $checkgroup, manager::PLUGINNAME),
                 $group->errorinstances
             ];
         }

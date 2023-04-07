@@ -34,6 +34,18 @@ use tool_brickfield\manager;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class renderer extends \tool_brickfield\output\renderer {
+    /** @var bool Use images within the PDF */
+    private $imagesenabled = true;
+
+    /**
+     * Set a boolean flag which determines whether images should be used.
+     *
+     * @param bool $enabled
+     */
+    public function set_images_enabled(bool $enabled) {
+        $this->imagesenabled = $enabled;
+    }
+
     /**
      * Render the page containing the Printable report.
      *
@@ -210,7 +222,27 @@ class renderer extends \tool_brickfield\output\renderer {
      */
     private function image_path(): string {
         global $CFG;
+        if ($CFG->sslproxy) {
+            if (strpos($CFG->wwwroot, 'https') === 0) {
+                // Remove s from https.
+                return substr_replace($CFG->wwwroot, '', 4, 1);
+            }
+        }
         return $CFG->wwwroot . '/admin/tool/brickfield/pix/pdf/';
+    }
+
+    /**
+     * Render a HTML img tag from the plugins pix/pdf folder.
+     *
+     * @param string $name
+     * @return string
+     */
+    private function render_image($name): string {
+        if (!$this->imagesenabled) {
+            return '';
+        }
+        $imgsrc = $this->image_path() . $name;
+        return '<img src="' . $imgsrc . '" width="15" height="15">';
     }
 
     /**
@@ -252,16 +284,16 @@ class renderer extends \tool_brickfield\output\renderer {
             <p>' . userdate($date->getTimestamp()) . '</p>
             <table cellspacing="0" cellpadding="1">
                 <tr>
-                    <td>
-                        <img src="' . $this->image_path() . 'tachometer-alt-solid.svg" width="15" height="15">' .
+                    <td>' .
+                        $this->render_image("tachometer-alt-solid.svg") .
                         get_string('totalactivitiescount', manager::PLUGINNAME, $data->combodata['total']) .
                     '</td>
-                    <td>
-                        <img src="' . $this->image_path() . 'check-square-regular.svg" width="15" height="15">' .
+                    <td>' .
+                        $this->render_image("check-square-regular.svg") .
                         get_string('passedcount', manager::PLUGINNAME, $data->combodata['passed']) .
                     '</td>
-                    <td>
-                        <img src="' . $this->image_path() . 'times-circle-regular.svg" width="15" height="15">' .
+                    <td>' .
+                        $this->render_image("times-circle-regular.svg") .
                         get_string('failedcount', manager::PLUGINNAME, $data->combodata['failed']) .
                     '</td>
                 </tr>
@@ -382,18 +414,18 @@ class renderer extends \tool_brickfield\output\renderer {
 
         // Numbers are constants from \tool_brickfield\area_base::checkgroup.
         $icons = [
-            area_base::CHECKGROUP_IMAGE  => $this->image_path() . 'image-regular.svg',
-            area_base::CHECKGROUP_LAYOUT => $this->image_path() . 'th-large-solid.svg',
-            area_base::CHECKGROUP_LINK   => $this->image_path() . 'link.png',
-            area_base::CHECKGROUP_MEDIA  => $this->image_path() . 'play-circle-regular.svg',
-            area_base::CHECKGROUP_TABLE  => $this->image_path() . 'table-solid.svg',
-            area_base::CHECKGROUP_TEXT   => $this->image_path() . 'font-solid.svg',
+            area_base::CHECKGROUP_IMAGE  => $this->render_image('image-regular.svg'),
+            area_base::CHECKGROUP_LAYOUT => $this->render_image('th-large-solid.svg'),
+            area_base::CHECKGROUP_LINK   => $this->render_image('link.png'),
+            area_base::CHECKGROUP_MEDIA  => $this->render_image('play-circle-regular.svg'),
+            area_base::CHECKGROUP_TABLE  => $this->render_image('table-solid.svg'),
+            area_base::CHECKGROUP_TEXT   => $this->render_image('font-solid.svg'),
         ];
 
         foreach ($data->groupdata as $key => $group) {
             $checkgroup = area_base::checkgroup_name($key);
             $icon = $icons[$key];
-            $tabledata[] = ['<img src="'.$icon.'" width="15" height="15">' . ' ' .
+            $tabledata[] = [$icon . ' ' .
                 get_string('checktype:' . $checkgroup, manager::PLUGINNAME), $group->errorinstances];
         }
 

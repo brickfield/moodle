@@ -224,7 +224,14 @@ class printable extends tool {
 
         $renderer = $PAGE->get_renderer('tool_brickfield', 'printable');
         if ($filter->target == 'pdf') {
-            $renderer->pdf_renderer($data, $filter);
+            try {
+                $renderer->pdf_renderer($data, $filter);
+            } catch (\Exception $e) {
+                // Images can cause issues on some network configurations where it is not possible
+                // for TCPDF to fetch the image from wwwroot.
+                $renderer->set_images_enabled(false);
+                $renderer->pdf_renderer($data, $filter);
+            }
             return '';
         } else if ($filter->target == 'html') {
             $output = $renderer->header();

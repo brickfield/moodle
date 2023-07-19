@@ -70,7 +70,8 @@ class registration_test extends \advanced_testcase {
         // State when valid format keys are sent.
         $this->assertTrue($regobj->set_keys_for_registration(mock_brickfieldconnect::VALIDAPIKEY,
             mock_brickfieldconnect::VALIDSECRETKEY));
-        $this->assertTrue($regobj->validation_pending());
+        $this->assertTrue($regobj->toolkit_is_active());
+        $this->assertFalse($regobj->validation_pending());
         $this->assertEquals($regobj->get_api_key(), mock_brickfieldconnect::VALIDAPIKEY);
         $this->assertEquals($regobj->get_secret_key(), mock_brickfieldconnect::VALIDSECRETKEY);
     }

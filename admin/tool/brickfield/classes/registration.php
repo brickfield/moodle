@@ -140,6 +140,13 @@ class registration {
             $this->set_api_key($apikey);
             $this->set_secret_key($secretkey);
             $this->set_not_validated();
+            // Attempt to validate the registration.
+            $this->validate();
+            if (!$this->status_is_validated()) {
+                // If the validation failed here, start the grace period.
+                $this->set_not_validated();
+                $this->set_summary_time();
+            }
             if ($this->summarytime <= 0) {
                 $this->set_summary_time();
             }

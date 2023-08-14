@@ -260,6 +260,7 @@ class brickfield_accessibility_color_test extends brickfield_accessibility_test 
             // Getting end point of rgb value, i.e. the end bracket.
             $endpos = strpos($colors[1], ')');
             $color = 'rgb' . substr($colors[1], 0, ($endpos + 1)); // Recompiling rgb value.
+            echo('color is '.$color);
         } else {
             // Splitting multi-value css background value.
             if (strpos($color, ' ') !== false) {
@@ -290,9 +291,24 @@ class brickfield_accessibility_color_test extends brickfield_accessibility_test 
         }
         // RGB values.
         if (strtolower(substr($color, 0, 3)) == 'rgb') {
-            $colors = explode(',', trim(str_replace('rgb(', '', $color), '()'));
-            if (count($colors) != 3) {
-                return false;
+            if (strpos($color, 'rgba') !== false) {
+                //$this->defaultbackground = '#69BE41';
+
+                $tmpbg = $this->get_rgb($this->defaultbackground);
+                $colors = explode(',', trim(str_replace('rgba(', '', $color), '()'));
+                print_r($colors);
+                $colors[0] = round(((1 - $colors[3]) * $tmpbg['r']) + ($colors[3] * $colors[0]));
+                $colors[1] = round((1 - $colors[3]) * $tmpbg['g']) + ($colors[3] * $colors[1]);
+                $colors[2] = round((1 - $colors[3]) * $tmpbg['b']) + ($colors[3] * $colors[2]);
+                print_r($colors);
+                if (count($colors) != 4) {
+                    return false;
+                }
+            } else {
+                $colors = explode(',', trim(str_replace('rgb(', '', $color), '()'));
+                if (count($colors) != 3) {
+                    return false;
+                }
             }
             $r = intval($colors[0]);
             $g = intval($colors[1]);
@@ -305,6 +321,7 @@ class brickfield_accessibility_color_test extends brickfield_accessibility_test 
             $color = (strlen($r) < 2 ? '0' : '') . $r;
             $color .= (strlen($g) < 2 ? '0' : '') . $g;
             $color .= (strlen($b) < 2 ? '0' : '') . $b;
+            echo('ZZ '.$color);
             return $color;
         }
 

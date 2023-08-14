@@ -92,6 +92,7 @@ class css_text_has_contrast extends brickfield_accessibility_color_test {
                     $style['background-color'] = '#' . $this->convert_color($background);
 
                     $luminosity = $this->get_luminosity($style['color'], $style['background-color']);
+                    echo('c = '.$style['color'].', bg = '.$style['background-color'].', lum = '.$luminosity);
                     $fontsize = 0;
                     $bold = false;
                     $italic = false;

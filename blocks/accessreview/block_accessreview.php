@@ -276,7 +276,7 @@ class block_accessreview extends block_base {
                         'target' => 'pdf',
                     ]
                 ),
-                $OUTPUT->pix_icon('a/download_all', get_string('downloadreportalt', 'block_accessreview')),
+                $OUTPUT->pix_icon('t/print', get_string('downloadreportalt', 'block_accessreview')),
                 [
                     'title' => get_string('downloadreportalt', 'block_accessreview'),
                     'class' => 'block_accessreview_link download-accessmap',

@@ -68,10 +68,12 @@ class report_codehighlight extends \tool_brickfield\local\htmlchecker\brickfield
         }
         $this->dom->formatOutput = true;
         $html = htmlspecialchars($this->dom->saveHTML(), ENT_COMPAT);
-        $html = str_replace('&quot;', '"', $html);
-        foreach ($this->classnames as $name) {
-            $html = preg_replace('/&lt;'. $name .'([^&]+)+\&gt;/', '<span \\1>', $html);
-            $html = str_replace('&lt;/'. $name .'&gt;', '</span>', $html);
+        if ($html) {
+            $html = str_replace('&quot;', '"', $html);
+            foreach ($this->classnames as $name) {
+                $html = preg_replace('/&lt;'. $name .'([^&]+)+\&gt;/', '<span \\1>', $html);
+                $html = str_replace('&lt;/'. $name .'&gt;', '</span>', $html);
+            }
         }
         return $html;
     }

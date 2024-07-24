@@ -91,7 +91,7 @@ class report_static extends brickfield_accessibility_reporter {
                             if ($testresult['font_weight'] === "bolder") {
                                 $testresult['font_weight'] = "bold";
                             }
-                            $testresult['text_type'] = preg_replace('/(?=:).+/', '', $problem->message);
+                            $testresult['text_type'] = is_null($problem->message) ? '' : preg_replace('/(?=:).+/', '', $problem->message);
 
                         }
 

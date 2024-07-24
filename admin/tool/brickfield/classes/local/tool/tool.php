@@ -392,6 +392,6 @@ abstract class tool {
      * @return string
      */
     public static function get_check_description(string $check): string {
-        return get_string('checkdesc:' . str_replace('_', '', $check), manager::PLUGINNAME);
+        return is_null($check) ? '' : get_string('checkdesc:' . str_replace('_', '', $check), manager::PLUGINNAME);
     }
 }

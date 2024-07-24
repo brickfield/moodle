@@ -77,7 +77,10 @@ abstract class area_test_base extends \advanced_testcase {
     public function assert_area_in_array(array $areas, string $component, int $contextid, int $itemid,
                                          ?int $courseid, ?int $categoryid): void {
         $found = false;
-        $message = str_replace('%component%', $component, $this->areatestmessage);
+        $message = '';
+        if (!is_null($component) && !is_null($this->areatestmessage)){
+            $message = str_replace('%component%', $component, $this->areatestmessage);
+        }
         foreach ($areas as $area) {
             if (($area->component == $component) &&
                 ($area->contextid == $contextid) &&

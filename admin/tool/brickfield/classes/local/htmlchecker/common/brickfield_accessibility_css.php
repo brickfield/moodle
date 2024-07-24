@@ -114,7 +114,7 @@ class brickfield_accessibility_css {
             $this->load_uri($sheet);
         }
         $this->load_imported_files();
-        $this->cssstring = str_replace(':link', '', $this->cssstring);
+        $this->cssstring = is_null($this->cssstring) ? '' : str_replace(':link', '', $this->cssstring);
         $this->format_css();
     }
 
@@ -130,7 +130,9 @@ class brickfield_accessibility_css {
         foreach ($matches[1] as $match) {
             $this->load_uri(trim(str_replace('url', '', $match), '"\')('));
         }
-        preg_replace('/@import (.*?);/i', '', $this->cssstring);
+        if (!is_null($this->cssstring)) {
+            preg_replace('/@import (.*?);/i', '', $this->cssstring);
+        }
     }
 
     /**
@@ -315,7 +317,7 @@ class brickfield_accessibility_css {
      */
     private function format_css(): bool {
         // Remove comments.
-        $str = preg_replace("/\/\*(.*)?\*\//Usi", "", $this->cssstring);
+        $str = is_null($this->cssstring) ? '' : preg_replace("/\/\*(.*)?\*\//Usi", "", $this->cssstring);
         // Parse this csscode.
         $parts = explode("}", $str);
         if (count($parts) > 0) {
@@ -381,7 +383,7 @@ class brickfield_accessibility_css {
      */
     private function parse_selector(string $query): array {
         // Clean spaces.
-        $query = trim(preg_replace('@\s+@', ' ', preg_replace('@\s*(>|\\+|~)\s*@', '\\1', $query)));
+        $query = is_null($query) ? '' : trim(preg_replace('@\s+@', ' ', preg_replace('@\s*(>|\\+|~)\s*@', '\\1', $query)));
         $queries = [[]];
         if (!$query) {
             return $queries;

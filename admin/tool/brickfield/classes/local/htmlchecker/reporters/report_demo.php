@@ -118,45 +118,47 @@ class report_demo extends brickfield_accessibility_reporter {
         $host = $uriparts["scheme"]."://".$hosturl."/".$path."/";
         $hostnopath = $uriparts["scheme"]."://".$hosturl."/";
 
-        // Proxifies local META redirects.
-        $html = preg_replace('@<META HTTP-EQUIV(.*)URL=/@',
-            "<META HTTP-EQUIV\$1URL=".$_SERVER['PHP_SELF']."?url=".$hostnopath, $html);
+        if ($html) {
+            // Proxifies local META redirects.
+            $html = preg_replace('@<META HTTP-EQUIV(.*)URL=/@',
+                "<META HTTP-EQUIV\$1URL=".$_SERVER['PHP_SELF']."?url=".$hostnopath, $html);
 
-        // Make sure the host doesn't end in '//'.
-        $host = rtrim($host, '/')."/";
+            // Make sure the host doesn't end in '//'.
+            $host = rtrim($host, '/')."/";
 
-        // Replace '//' with 'http://'.
-        $pattern = "#(?<=\"|'|=)\/\/#"; // The '|=' is experimental as it's probably not necessary.
-        $html = preg_replace($pattern, "http://", $html);
+            // Replace '//' with 'http://'.
+            $pattern = "#(?<=\"|'|=)\/\/#"; // The '|=' is experimental as it's probably not necessary.
+            $html = preg_replace($pattern, "http://", $html);
 
-        // Fully qualifies '"/'.
-        $html = preg_replace("#\"\/#", "\"".$host, $html);
+            // Fully qualifies '"/'.
+            $html = preg_replace("#\"\/#", "\"".$host, $html);
 
-        // Fully qualifies "'/".
-        $html = preg_replace("#\'\/#", "\'".$host, $html);
+            // Fully qualifies "'/".
+            $html = preg_replace("#\'\/#", "\'".$host, $html);
 
-        // Matches [src|href|background|action]="/ because in the following pattern the '/' shouldn't stay.
-        $html = preg_replace("#(src|href|background|action)(=\"|='|=(?!'|\"))\/#i", "\$1\$2".$hostnopath, $html);
-        $html = preg_replace("#(href|src|background|action)(=\"|=(?!'|\")|=')(?!http|ftp|https|\"|'|javascript:|mailto:)#i",
-            "\$1\$2".$host, $html);
+            // Matches [src|href|background|action]="/ because in the following pattern the '/' shouldn't stay.
+            $html = preg_replace("#(src|href|background|action)(=\"|='|=(?!'|\"))\/#i", "\$1\$2".$hostnopath, $html);
+            $html = preg_replace("#(href|src|background|action)(=\"|=(?!'|\")|=')(?!http|ftp|https|\"|'|javascript:|mailto:)#i",
+                "\$1\$2".$host, $html);
 
-        // Points all form actions back to the proxy.
-        $html = preg_replace('/<form.+?action=\s*(["\']?)([^>\s"\']+)\\1[^>]*>/i',
-            "<form action=\"{$_SERVER['PHP_SELF']}\"><input type=\"hidden\" name=\"original_url\" value=\"$2\">", $html);
+            // Points all form actions back to the proxy.
+            $html = preg_replace('/<form.+?action=\s*(["\']?)([^>\s"\']+)\\1[^>]*>/i',
+                "<form action=\"{$_SERVER['PHP_SELF']}\"><input type=\"hidden\" name=\"original_url\" value=\"$2\">", $html);
 
-        // Matches '/[any assortment of chars or nums]/../'.
-        $html = preg_replace("#\/(\w*?)\/\.\.\/(.*?)>#ims", "/\$2>", $html);
+            // Matches '/[any assortment of chars or nums]/../'.
+            $html = preg_replace("#\/(\w*?)\/\.\.\/(.*?)>#ims", "/\$2>", $html);
 
-        // Matches '/./'.
-        $html = preg_replace("#\/\.\/(.*?)>#ims", "/\$1>", $html);
+            // Matches '/./'.
+            $html = preg_replace("#\/\.\/(.*?)>#ims", "/\$1>", $html);
 
-        // Handles CSS2 imports.
-        if (strpos($html, "import url(\"http") == false && (strpos($html, "import \"http") == false)
-            && strpos($html, "import url(\"www") == false && (strpos($html, "import \"www") == false)) {
-            $pattern = "#import .(.*?).;#ims";
-            $mainurl = substr($host, 0, $this->strnpos($host, "/", 3));
-            $replace = "import '".$mainurl."\$1';";
-            $html = preg_replace($pattern, $replace, $html);
+            // Handles CSS2 imports.
+            if (strpos($html, "import url(\"http") == false && (strpos($html, "import \"http") == false)
+                && strpos($html, "import url(\"www") == false && (strpos($html, "import \"www") == false)) {
+                $pattern = "#import .(.*?).;#ims";
+                $mainurl = substr($host, 0, $this->strnpos($host, "/", 3));
+                $replace = "import '".$mainurl."\$1';";
+                $html = preg_replace($pattern, $replace, $html);
+            }
         }
         return $html;
     }

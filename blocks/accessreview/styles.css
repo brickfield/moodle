@@ -1,3 +1,7 @@
+.block_accessreview .activity-item.hiddenactivity {
+    background: inherit;
+}
+
 .block_accessreview_success,
 .block_accessreview.block_accessreview_success.hasinfo {
     color: #1e451e;

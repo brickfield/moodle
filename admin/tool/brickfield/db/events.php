@@ -137,6 +137,16 @@ $observers = [
         'internal'  => false,
     ],
     [
+        'eventname' => '\core\event\question_moved',
+        'callback'  => '\tool_brickfield\eventobservers::core_question_moved',
+        'internal'  => false,
+    ],
+    [
+        'eventname' => '\core\event\questions_imported',
+        'callback'  => '\tool_brickfield\eventobservers::core_questions_imported',
+        'internal'  => false,
+    ],
+    [
         'eventname' => '\core\event\question_updated',
         'callback'  => '\tool_brickfield\eventobservers::core_question_updated',
         'internal'  => false,

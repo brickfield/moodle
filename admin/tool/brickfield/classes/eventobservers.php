@@ -347,6 +347,32 @@ class eventobservers {
     }
 
     /**
+     * core_question moved observer
+     * @param \core\event\question_moved $event The core_question moved event.
+     * @throws \ReflectionException
+     * @throws \dml_exception
+     */
+    public static function core_question_moved(\core\event\question_moved $event) {
+        // Handle if this feature is enabled and this course is in the schedule.
+        if (static::course_event_should_be_handled($event->courseid)) {
+            manager::find_new_or_updated_areas($event);
+        }
+    }
+
+    /**
+     * core_question moved observer
+     * @param \core\event\questions_imported $event The core_questions imported event.
+     * @throws \ReflectionException
+     * @throws \dml_exception
+     */
+    public static function core_questions_imported(\core\event\questions_imported $event) {
+        // Handle if this feature is enabled and this course is in the schedule.
+        if (static::course_event_should_be_handled($event->courseid)) {
+            manager::find_new_or_updated_areas($event);
+        }
+    }
+
+    /**
      * core_question updated observer
      * @param \core\event\question_updated $event The core_question created event.
      * @throws \ReflectionException

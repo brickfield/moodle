@@ -103,11 +103,8 @@ class eventobservers {
     public static function course_restored(\core\event\course_restored $event) {
         // Handle if this feature is enabled and this course is in the schedule.
         if (static::course_event_should_be_handled($event->courseid)) {
-            $data = new stdClass();
-            $data->courseid = $event->courseid;
-            $data->item = 'coursererun';
-            static::observer_insert($data);
-            static::course_altered($event);
+            // Schedule a re-analysis.
+            scheduler::request_course_reanalysis($event->courseid);
         }
     }
 

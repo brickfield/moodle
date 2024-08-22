@@ -42,6 +42,11 @@ class scheduler {
     const STATUS_SUBMITTED = 2;
 
     /**
+     *  Analysis has been re-requested.
+     */
+    const STATUS_REREQUESTED = 3;
+
+    /**
      * The data table used by the scheduler.
      */
     const DATA_TABLE = 'tool_brickfield_schedule';
@@ -63,6 +68,20 @@ class scheduler {
     }
 
     /**
+     * Set the status of the scheduled object to the specified status value. If the object is not in the schedule, add it.
+     * @param int $status
+     * @return bool
+     */
+    protected function set_status(int $status): bool {
+        global $DB;
+        if (!$this->create_schedule()) {
+            return false;
+        }
+        $DB->set_field(self::DATA_TABLE, 'status', $status, $this->standard_search_params());
+        return $DB->set_field(self::DATA_TABLE, 'timemodified', time(), $this->standard_search_params());
+    }
+
+    /**
      * Request this schedule object to be analyzed. Create the schedule if not present.
      * @return bool
      */
@@ -72,20 +91,44 @@ class scheduler {
             return false;
         }
         if ($DB->set_field(self::DATA_TABLE, 'status', self::STATUS_REQUESTED, $this->standard_search_params())) {
-            if ($this->contextlevel == CONTEXT_COURSE) {
-                $context = \context_course::instance($this->instanceid);
-            } else {
-                $context = \context_system::instance();
-            }
+            $this->trigger_event(static::STATUS_REQUESTED);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Request this schedule object to be re-analyzed. Create the schedule if not present.
+     * Log an analysis requested event.
+     *
+     * @return bool
+     */
+    protected function request_reanalysis(): bool {
+        if ($this->set_status(static::STATUS_REREQUESTED)) {
+            $this->trigger_event(static::STATUS_REREQUESTED);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Trigger an event of the specified type.
+     * @param int $eventtype
+     */
+    protected function trigger_event(int $eventtype) {
+        if ($this->contextlevel == CONTEXT_COURSE) {
+            $context = \context_course::instance($this->instanceid);
+        } else {
+            $context = \context_system::instance();
+        }
+        if (($eventtype == static::STATUS_REQUESTED) || ($eventtype == static::STATUS_REREQUESTED)) {
             $event = \tool_brickfield\event\analysis_requested::create([
                 'context' => $context,
                 'other' => ['course' => $this->instanceid],
             ]);
             $event->trigger();
-
-            return true;
-        } else {
-            return false;
         }
     }
 
@@ -170,20 +213,36 @@ class scheduler {
 
         // A course is considered analyzed if it has been submitted and there is summary cache data for it.
         $sql = 'SELECT * ' .
-            'FROM {' . self::DATA_TABLE . '} sch ' .
-            'INNER JOIN {' . manager::DB_SUMMARY . '} sum ON sch.instanceid = sum.courseid ' .
-            'WHERE (sch.contextlevel = :contextlevel) AND (sch.instanceid = :instanceid) AND (sch.status = :status)';
-        if (!$DB->record_exists_sql($sql, $this->standard_search_params() + ['status' => self::STATUS_SUBMITTED])) {
+        'FROM {' . self::DATA_TABLE . '} sch ' .
+        'INNER JOIN {' . manager::DB_SUMMARY . '} sum ON sch.instanceid = sum.courseid ' .
+        'WHERE (sch.contextlevel = :contextlevel) AND (sch.instanceid = :instanceid) AND (sch.status = :status)';
+
+        if ($DB->record_exists_sql($sql, $this->standard_search_params() + ['status' => self::STATUS_REREQUESTED])) {
+            return false;
+        } else if (!$DB->record_exists_sql($sql, $this->standard_search_params() + ['status' => self::STATUS_SUBMITTED])) {
             // It may have been created in a prior version, so check before returning false. If it was, add a record for it.
             if ($DB->record_exists(manager::DB_SUMMARY, ['courseid' => $this->instanceid])) {
                 return $this->mark_analyzed();
             } else {
                 return false;
             }
-        } else {
-            return true;
         }
+        return true;
     }
+
+    /**
+     * Call all analysis functions for the specified course.
+     * @param object $request
+     */
+    protected static function analyze_course(object $request) {
+        global $DB;
+        manager::find_new_or_updated_areas_per_course($request->instanceid);
+        $request->status = self::STATUS_SUBMITTED;
+        $request->timeanalyzed = time();
+        $request->timemodified = time();
+        $DB->update_record(self::DATA_TABLE, $request);
+    }
+
 
     /**
      * The nornal data parameters to search for.
@@ -231,7 +290,6 @@ class scheduler {
      */
     public static function process_scheduled_requests() {
         global $DB;
-
         // Run a registration check.
         if (!(new registration())->validate()) {
             return;
@@ -239,21 +297,36 @@ class scheduler {
 
         $runtimemax = MINSECS * 5; // Only process requests for five minutes. May want to tie this to task schedule.
         $runtime = time();
-        $requestset = $DB->get_recordset(self::DATA_TABLE, ['status' => self::STATUS_REQUESTED], 'timemodified ASC');
-        foreach ($requestset as $request) {
+
+        // Handle reanalysis requests.
+        $requests = $DB->get_recordset(self::DATA_TABLE, ['status' => self::STATUS_REREQUESTED], 'timemodified ASC');
+        foreach ($requests as $request) {
             if ($request->contextlevel == CONTEXT_COURSE) {
-                manager::find_new_or_updated_areas_per_course($request->instanceid);
-                $request->status = self::STATUS_SUBMITTED;
-                $request->timeanalyzed = time();
-                $request->timemodified = time();
-                $DB->update_record(self::DATA_TABLE, $request);
-            }
-            $runtime = time() - $runtime;
-            if ($runtime >= $runtimemax) {
-                break;
+                // Delete all original course data, renalysis and store the summary.
+                manager::delete_course_data($request->instanceid);
+                static::analyze_course($request);
+                manager::store_result_summary($request->instanceid);
+                if ((time() - $runtime) >= (0.9 * $runtimemax)) {
+                    $requests->close();
+                    return;
+                }
             }
         }
-        $requestset->close();
+        $requests->close();
+
+        // Handle new analysis requests.
+        $requests = $DB->get_recordset(self::DATA_TABLE, ['status' => self::STATUS_REQUESTED], 'timemodified ASC');
+        foreach ($requests as $request) {
+            if ($request->contextlevel == CONTEXT_COURSE) {
+                static::analyze_course($request);
+                $runtime = time() - $runtime;
+                if ($runtime >= $runtimemax) {
+                    $requests->close();
+                    return;
+                }
+            }
+        }
+        $requests->close();
     }
 
     // The following are static versions of the above functions for courses that do not require creating an object first.
@@ -299,6 +372,15 @@ class scheduler {
      */
     public static function request_course_analysis(int $courseid) {
         return (new scheduler($courseid))->request_analysis();
+    }
+
+    /**
+     * Re-request the specified course be analyzed.
+     * @param int $courseid
+     * @return bool
+     */
+    public static function request_course_reanalysis($courseid): bool {
+        return (new scheduler($courseid))->request_reanalysis();
     }
 
     /**

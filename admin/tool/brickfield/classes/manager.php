@@ -492,6 +492,22 @@ class manager {
     }
 
     /**
+     * Removes all analysis data for the course.
+     * @param int $courseid
+     */
+    public static function delete_course_data(int $courseid) {
+        global $DB;
+
+        // Delete the cache data.
+        static::delete_summary_data($courseid);
+        // Get all the course areas and remove their analysis data.
+        $areas = $DB->get_records(self::DB_AREAS, ['courseid' => $courseid]);
+        foreach ($areas as $area) {
+            static::delete_area_tree($area);
+        }
+    }
+
+    /**
      * Checks all queued course updates, and finds all relevant areas.
      *
      * @param int $batch limit

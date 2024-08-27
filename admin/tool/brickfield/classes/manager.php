@@ -796,13 +796,14 @@ class manager {
         $sql = "
         SELECT
             area.cmid,
+            area.component,
             sum(errorcount) as numerrors,
             count(errorcount) as numchecks
          FROM {" . self::DB_AREAS . "} area
          JOIN {" . self::DB_CONTENT . "} ch ON ch.areaid = area.id AND ch.iscurrent = 1
          JOIN {" . self::DB_RESULTS . "} res ON res.contentid = ch.id
         WHERE area.courseid = :courseid AND component != :component
-     GROUP BY cmid";
+     GROUP BY cmid, component";
 
         $params = [
             'courseid' => $courseid,

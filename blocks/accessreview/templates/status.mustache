@@ -36,28 +36,17 @@
     Example context (json):
     {
         "classList": "block_accessreview_danger",
-        "passRate": {
-            "checkCount": "60",
-            "errorCount": "12",
-            "failureRate": "20"
-        }
+        "message": "Failed - error count 1",
+        "resultPassed": false
     }
 }}
 <div class="block_accessreview block_accessreview_view {{classList}}">
     {{#resultPassed}}
         {{#pix}}t/pass, block_accessreview, {{#str}}status:successalt, block_accessreview{{/str}}{{/pix}}
-        {{#str}}status:success, block_accessreview, {
-            "errorCount": {{passRate.errorCount}},
-            "checkCount": {{passRate.checkCount}},
-            "failureRate": {{passRate.failureRate}}
-        }{{/str}}
+        {{message}}
     {{/resultPassed}}
     {{^resultPassed}}
         {{#pix}}t/fail, block_accessreview, {{#str}}status:errorsalt, block_accessreview{{/str}}{{/pix}}
-        {{#str}}status:errors, block_accessreview, {
-            "errorCount": {{passRate.errorCount}},
-            "checkCount": {{passRate.checkCount}},
-            "failureRate": {{passRate.failureRate}}
-        }{{/str}}
+        {{message}}
     {{/resultPassed}}
 </div>

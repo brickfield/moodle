@@ -72,7 +72,16 @@ class get_section_data extends external_api {
 
         require_capability('block/accessreview:view', $context);
 
-        return array_values(manager::get_section_summary_for_course($courseid));
+        $sections = array_values(manager::get_section_summary_for_course($courseid));
+        // Add language strings to the section data.
+        foreach ($sections as $section) {
+            if ($section->numerrors > 0) {
+                $section->message = get_string('status:errors', 'block_accessreview', ['errorCount' => $section->numerrors]);
+            } else {
+                $section->message = get_string('status:success', 'block_accessreview');
+            }
+        }
+        return array_values($sections);
     }
 
     /**
@@ -87,6 +96,7 @@ class get_section_data extends external_api {
                     'section' => new external_value(PARAM_INT, 'ID'),
                     'numerrors' => new external_value(PARAM_INT, 'Number of errors.'),
                     'numchecks' => new external_value(PARAM_INT, 'Number of checks.'),
+                    'message' => new external_value(PARAM_TEXT, 'Message.'),
                 ]
             )
         );

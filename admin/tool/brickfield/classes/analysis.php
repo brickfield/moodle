@@ -37,6 +37,15 @@ class analysis {
      */
     const ANALYSISBYREQUEST = '1';
 
+    /** @var array Plugin types where only the intro but not content will be analysed.*/
+    const CONTENT_NOT_ANALYSED = [
+        'mod_folder',
+        'mod_imscp',
+        'mod_resource',
+        'mod_scorm',
+        'mod_h5pactivity',
+    ];
+
     /**
      * Return the type of analysis being used (currently only request).
      *

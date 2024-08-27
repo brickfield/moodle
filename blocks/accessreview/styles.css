@@ -19,6 +19,12 @@
     box-shadow: 0 0 2px 2px #c97a0e;
 }
 
+.block_accessreview_notanalysed,
+.block_accessreview.block_accessreview_notanalysed.hasinfo {
+    background: #e3e3e3;
+    border-color: #c3c3c3;
+}
+
 .block_accessreview_table {
     border-bottom: 1px solid;
     border-color: #eee8e8;

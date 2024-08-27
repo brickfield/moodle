@@ -41,25 +41,21 @@ let toggleState = true;
 /**
  * Renders the HTML template onto a particular HTML element.
  * @param {HTMLElement} element The element to attach the HTML to.
- * @param {number} errorCount The number of errors on this module/section.
- * @param {number} checkCount The number of checks triggered on this module/section.
+ * @param {Object} item The accessibility checked item to render.
  * @param {String} displayFormat
  * @param {Number} minViews
  * @param {Number} viewDelta
+ * @param {Boolean} analysed
  * @returns {Promise}
  */
-const renderTemplate = (element, errorCount, checkCount, displayFormat, minViews, viewDelta) => {
+const renderTemplate = (element, item, displayFormat, minViews, viewDelta, analysed = true) => {
     // Calculate a weight?
-    const weight = parseInt((errorCount - minViews) / viewDelta * numColours);
+    const weight = parseInt((item.numerrors - minViews) / viewDelta * numColours);
 
     const context = {
-        resultPassed: !errorCount,
+        resultPassed: !item.numerrors,
         classList: '',
-        passRate: {
-            errorCount,
-            checkCount,
-            failureRate: Math.round(errorCount / checkCount * 100),
-        },
+        message: item.message
     };
 
     if (!element) {
@@ -67,7 +63,9 @@ const renderTemplate = (element, errorCount, checkCount, displayFormat, minViews
     }
 
     const elementClassList = ['block_accessreview'];
-    if (context.resultPassed) {
+    if (!analysed) {
+        elementClassList.push('block_accessreview_notanalysed');
+    } else if (context.resultPassed) {
         elementClassList.push('block_accessreview_success');
     } else if (weight) {
         elementClassList.push('block_accessreview_danger');
@@ -125,8 +123,7 @@ const showAccessMap = (courseId, displayFormat, updatePreference = false) => {
             if (!element) {
                 return;
             }
-
-            renderTemplate(element, section.numerrors, section.numchecks, displayFormat, minViews, viewDelta);
+            renderTemplate(element, section, displayFormat, minViews, viewDelta);
         });
 
         moduleData.forEach(module => {
@@ -134,8 +131,7 @@ const showAccessMap = (courseId, displayFormat, updatePreference = false) => {
             if (!element) {
                 return;
             }
-
-            renderTemplate(element, module.numerrors, module.numchecks, displayFormat, minViews, viewDelta);
+            renderTemplate(element, module, displayFormat, minViews, viewDelta, module.analysed);
         });
 
         // Change the icon display.
@@ -166,6 +162,7 @@ const hideAccessMap = (updatePreference = false) => {
         'block_accessreview_warning',
         'block_accessreview_danger',
         'block_accessreview_view',
+        'block_accessreview_notanalysed',
         'alert',
     ];
 

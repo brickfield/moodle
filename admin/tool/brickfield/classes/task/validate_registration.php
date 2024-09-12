@@ -14,16 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace tool_brickfield\task;
+use tool_brickfield\registration;
+
 /**
- * Plugin version and other meta-data are defined here.
+ * Adhoc task to validate registration details.
  *
- * @package     tool_brickfield
- * @copyright   2020 Brickfield Education Labs, https://www.brickfield.ie - Author: Karen Holland
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    tool_brickfield
+ * @copyright  2024 onward Brickfield Education Labs Ltd, https://www.brickfield.ie
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-defined('MOODLE_INTERNAL') || die();
-
-$plugin->component = 'tool_brickfield';
-$plugin->version = 2023100901;
-$plugin->requires = 2023100400;
+class validate_registration extends \core\task\adhoc_task {
+    /**
+     * Execute the task
+     */
+    public function execute() {
+        (new registration())->validate();
+    }
+}

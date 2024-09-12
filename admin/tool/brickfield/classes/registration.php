@@ -445,6 +445,29 @@ class registration {
     }
 
     /**
+     * Return the current registration status as a string.
+     *
+     * @return array The status, label, and notification level.
+     */
+    public function get_status_display(): array {
+        $status = $this->get_status();
+        if ($status == self::NOT_ENTERED || $status == self::EXPIRED || $status == self::INVALID) {
+            $message = get_string('inactive', manager::PLUGINNAME);
+            $level = 'error';
+        } else if ($status == self::PENDING) {
+            $message = get_string('notvalidated', manager::PLUGINNAME);
+            $level = 'warning';
+        } else if ($status == self::VALIDATED) {
+            $message = get_string('activated', manager::PLUGINNAME);
+            $level = 'success';
+        } else if ($status == self::ERROR) {
+            $message = get_string('validationerror', manager::PLUGINNAME);
+            $level = 'error';
+        }
+        return ['status' => $status, 'message' => $message, 'level' => $level];
+    }
+
+    /**
      * Set the time of the last registration check.
      * @param int $time
      * @return bool

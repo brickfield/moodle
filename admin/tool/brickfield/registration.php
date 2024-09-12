@@ -70,7 +70,16 @@ if (!$registration->toolkit_is_active()) {
     if ($registration->validation_error()) {
         echo $OUTPUT->notification(get_string('validationerror', manager::PLUGINNAME), 'error');
     } else {
-        echo $OUTPUT->notification(get_string('notvalidated', manager::PLUGINNAME), 'warning');
+        echo $OUTPUT->notification(
+            get_string('notvalidated',
+            manager::PLUGINNAME,
+            $OUTPUT->render_from_template('core/loading', [])),
+            'warning'
+        );
+        // Start validation task and update page with JS.
+        $PAGE->requires->js_call_amd('tool_brickfield/registration', 'init');
+        $task = new \tool_brickfield\task\validate_registration();
+        \core\task\manager::queue_adhoc_task($task, true);
     }
 } else {
     echo $OUTPUT->notification(get_string('activated', manager::PLUGINNAME), 'success');
